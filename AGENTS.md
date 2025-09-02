@@ -92,7 +92,8 @@ Using NMake (legacy files)
 - Add a small unit/integration smoke that exercises the SEH/JNI exception logging path on x64 and verifies formatting doesn’t truncate.
 
 4) CI for Windows
-- Add a GitHub Actions workflow that builds `wrapper_exe` and `wrapper_dll` on `windows-latest` with both MSVC and JDK matrix.
+- GitHub Actions workflow builds x64 on `windows-2025` and ARM64 on `windows-11-arm`.
+- Note: `windows-latest` migrates from Windows Server 2022 to 2025 beginning 2025-09-02; pin to `windows-2025` to avoid image drift.
 
 5) Cleanup defines
 - Revisit `_WIN32_WINNT=0x0501` (XP era) in both NMake and CMake; bump to a supported baseline if we no longer target XP.
