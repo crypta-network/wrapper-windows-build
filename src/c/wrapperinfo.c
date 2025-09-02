@@ -13,7 +13,10 @@
 /* Values below are conservative defaults for local builds. */
 /* Define wide/ansi string constants directly to avoid macro surprises. */
 #if defined(UNICODE) || defined(_UNICODE)
-  #ifdef _WIN64
+  #if defined(_M_ARM64) || defined(__aarch64__)
+    const wchar_t wrapperBits[]  = L"64";
+    const wchar_t wrapperArch[]  = L"arm64";
+  #elif defined(_WIN64)
     const wchar_t wrapperBits[]  = L"64";
     const wchar_t wrapperArch[]  = L"x86_64";
   #else
@@ -30,7 +33,10 @@
   const wchar_t wrapperBuildTime[]        = L"" __TIME__;
   const wchar_t wrapperJavacTargetVersion[] = L"unknown";
 #else
-  #ifdef _WIN64
+  #if defined(_M_ARM64) || defined(__aarch64__)
+    const char wrapperBits[]  = "64";
+    const char wrapperArch[]  = "arm64";
+  #elif defined(_WIN64)
     const char wrapperBits[]  = "64";
     const char wrapperArch[]  = "x86_64";
   #else

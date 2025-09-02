@@ -48,16 +48,25 @@ Prerequisites
 - JDK installed. Either set `JAVA_HOME` or ensure CMake can find JNI.
 
 Using CMake (recommended)
-- From a VS Developer Command Prompt (x64):
+- From a VS Developer Command Prompt that matches your target:
+  - x64: use the x64 Native Tools prompt
+  - ARM64: use the ARM64 Native Tools prompt
+- Commands:
   - `cmake -S src/c -B build -G "NMake Makefiles" -DUNICODE=ON`
   - `cmake --build build --config Release`
 - Artifacts: `bin/wrapper.exe` and `lib/wrapper.dll`.
 
-Using NMake (legacy file)
-- From a VS x64 Native Tools Command Prompt:
-  - `cd src/c`
-  - `set JAVA_HOME=C:\\Program Files\\Java\\jdk-<version>` (if not already set)
-  - `nmake /f Makefile-windows-x86-64.nmake all`
+Using NMake (legacy files)
+- x64:
+  - From a VS x64 Native Tools Command Prompt:
+    - `cd src/c`
+    - `set JAVA_HOME=C:\\Program Files\\Java\\jdk-<version>` (if not already set)
+    - `nmake /f Makefile-windows-x86-64.nmake all`
+- ARM64:
+  - From a VS ARM64 Native Tools Command Prompt:
+    - `cd src/c`
+    - `set JAVA_HOME=C:\\Program Files\\Java\\jdk-<version>` (if not already set)
+    - `nmake /f Makefile-windows-arm-64.nmake all`
 - Artifacts: `..\\..\\bin\\wrapper.exe` and `..\\..\\lib\\wrapper.dll`.
 
 ## Compatibility Notes
@@ -106,4 +115,3 @@ Using NMake (legacy file)
 - Prefer CMake for automation; it detects JNI and places outputs in stable locations.
 - When editing headers with exported symbols, grep for the symbol across the tree to catch template‐generated sources (see `wrapperinfo.c.in`).
 - For format‑string changes touching Windows types, validate with `/W4` and 64‑bit builds; `%Iu` is the MSVC portable specifier for `size_t`.
-

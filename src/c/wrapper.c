@@ -7131,7 +7131,12 @@ BOOL GetOSDisplayString(TCHAR** pszOS) {
         _tcsncat(*pszOS, buf, OSBUFSIZE);
 
         if (osvi.dwMajorVersion >= 6) {
-            if ((si.wProcessorArchitecture & PROCESSOR_ARCHITECTURE_IA64) || (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)) {
+            if ((si.wProcessorArchitecture & PROCESSOR_ARCHITECTURE_IA64) ||
+                (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
+#ifdef PROCESSOR_ARCHITECTURE_ARM64
+                || (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM64)
+#endif
+               ) {
                 _tcsncat(*pszOS, TEXT(", 64-bit"), OSBUFSIZE);
             } else if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL) {
                 _tcsncat(*pszOS, TEXT(", 32-bit"), OSBUFSIZE);
