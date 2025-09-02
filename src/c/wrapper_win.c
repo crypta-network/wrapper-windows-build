@@ -8031,8 +8031,9 @@ int exceptionFilterFunction(PEXCEPTION_POINTERS exceptionPointers) {
         }
     } else {
         for (i = 0; i < (int)exceptionPointers->ExceptionRecord->NumberParameters; i++) {
-            log_printf(WRAPPER_SOURCE_WRAPPER, LEVEL_FATAL, TEXT("  exceptionInformation[%d] = %ld"), i,
-                    exceptionPointers->ExceptionRecord->ExceptionInformation[i]);
+            /* ExceptionInformation is ULONG_PTR; use size_t and %Iu to be 32/64-bit safe. */
+            log_printf(WRAPPER_SOURCE_WRAPPER, LEVEL_FATAL, TEXT("  exceptionInformation[%d] = %Iu"), i,
+                    (size_t)exceptionPointers->ExceptionRecord->ExceptionInformation[i]);
         }
     }
 

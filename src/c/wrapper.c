@@ -70,18 +70,32 @@
  #include <winsock.h>
  #include <shlwapi.h>
  #include <windows.h>
- #include <io.h>
- #include <tlhelp32.h>
+#include <io.h>
+#include <tlhelp32.h>
 
 /* MS Visual Studio 8 went and deprecated the POXIX names for functions.
  *  Fixing them all would be a big headache for UNIX versions. */
- #pragma warning(disable : 4996)
+#pragma warning(disable : 4996)
 
 /* Defines for MS Visual Studio 6 */
- #ifndef _INTPTR_T_DEFINED
+#ifndef tzname
+# define tzname _tzname
+#endif
+#ifndef timezone
+# define timezone _timezone
+#endif
+#ifndef daylight
+# define daylight _daylight
+#endif
+
+#ifndef _CRT_SECURE_NO_WARNINGS
+# define _CRT_SECURE_NO_WARNINGS 1
+#endif
+
+#ifndef _INTPTR_T_DEFINED
   typedef long intptr_t;
   #define _INTPTR_T_DEFINED
- #endif
+#endif
 
 #else /* UNIX */
  #include <ctype.h>

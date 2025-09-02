@@ -699,7 +699,9 @@ void commonExceptionInfo(PEXCEPTION_POINTERS pExceptionInfo) {
         
     default:
         for (i = 0; i < (int)pExceptionInfo->ExceptionRecord->NumberParameters; i++) {
-            log_printf(TEXT("WrapperJNI Error:   ExceptionInformation[%d] = %ld"), i, pExceptionInfo->ExceptionRecord->ExceptionInformation[i]);
+            /* ExceptionInformation is ULONG_PTR; print portably as size_t. */
+            log_printf(TEXT("WrapperJNI Error:   ExceptionInformation[%d] = %Iu"), i,
+                (size_t)pExceptionInfo->ExceptionRecord->ExceptionInformation[i]);
         }
         break;
     }

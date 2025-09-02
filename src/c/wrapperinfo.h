@@ -17,15 +17,15 @@
 
 
 
-extern TCHAR *wrapperVersionRoot;
-extern TCHAR *wrapperVersion;
-extern TCHAR *wrapperBits;
-extern TCHAR *wrapperArch;
-extern TCHAR *wrapperOS;
-extern TCHAR *wrapperReleaseDate;
-extern TCHAR *wrapperReleaseTime;
-extern TCHAR *wrapperBuildDate;
-extern TCHAR *wrapperBuildTime;
-extern TCHAR *wrapperJavacTargetVersion;
+extern const TCHAR wrapperVersionRoot[];
+extern const TCHAR wrapperVersion[];
+extern const TCHAR wrapperBits[];
+extern const TCHAR wrapperArch[];
+extern const TCHAR wrapperOS[];
+extern const TCHAR wrapperReleaseDate[];
+extern const TCHAR wrapperReleaseTime[];
+extern const TCHAR wrapperBuildDate[];
+extern const TCHAR wrapperBuildTime[];
+extern const TCHAR wrapperJavacTargetVersion[];
 
 #endif
