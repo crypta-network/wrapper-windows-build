@@ -19,6 +19,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   release:
@@ -62,8 +63,7 @@ jobs:
             const sha = run.data.head_sha;
             core.setOutput('sha', sha);
             core.setOutput('sha_short', sha.substring(0, 8));
-            core.setOutput('prerelease', core.getBooleanInput('prerelease'));
-            core.setOutput('draft', core.getBooleanInput('draft'));
+            // booleans are read directly from inputs in later steps
 
       - name: Compute release metadata
         id: meta
@@ -141,8 +141,8 @@ jobs:
           tag_name: win-native-${{ steps.meta.outputs.date_tag }}-${{ steps.resolve.outputs.sha_short }}
           target_commitish: ${{ steps.resolve.outputs.sha }}
           name: ${{ steps.meta.outputs.date }}
-          draft: ${{ steps.resolve.outputs.draft }}
-          prerelease: ${{ steps.resolve.outputs.prerelease }}
+          draft: ${{ inputs.draft }}
+          prerelease: ${{ inputs.prerelease }}
           files: |
             release/wrapper-win-x64.tar.gz
             release/wrapper-win-arm64.tar.gz
