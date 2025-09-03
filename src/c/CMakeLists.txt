@@ -19,6 +19,17 @@ add_definitions(
   -D_WIN32_WINNT=0x0501
 )
 
+# Optional version override from the build (e.g., CI parses default.properties)
+if(DEFINED WRAPPER_VERSION)
+  message(STATUS "Embedding Wrapper version: ${WRAPPER_VERSION}")
+  add_compile_definitions(
+    WRAPPER_VERSION_W=L"${WRAPPER_VERSION}"
+    WRAPPER_VERSION_A="${WRAPPER_VERSION}"
+    WRAPPER_VERSION_ROOT_W=L"${WRAPPER_VERSION}"
+    WRAPPER_VERSION_ROOT_A="${WRAPPER_VERSION}"
+  )
+endif()
+
 include_directories(
   ${CMAKE_CURRENT_LIST_DIR}
   ${CMAKE_CURRENT_LIST_DIR}/..

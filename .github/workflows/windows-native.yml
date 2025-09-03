@@ -27,6 +27,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Read version
+        id: ver
+        uses: ./.github/actions/read-version
+        with:
+          properties_path: default.properties
+
+      - name: Patch Windows resources (.rc) with version
+        shell: bash
+        run: |
+          set -euo pipefail
+          VER='${{ steps.ver.outputs.version }}'
+          if [ -z "$VER" ]; then echo "Version not found" >&2; exit 1; fi
+          NUM=${VER//./, }
+          FULL="$NUM, 0"
+          RC=src/c/Wrapper.rc
+          cp "$RC" "$RC.bak"
+          # Update numeric FILEVERSION / PRODUCTVERSION
+          sed -E -i "s/^(\s*FILEVERSION)\s+[0-9 ,]+/\1 ${FULL}/" "$RC"
+          sed -E -i "s/^(\s*PRODUCTVERSION)\s+[0-9 ,]+/\1 ${FULL}/" "$RC"
+          # Update string FileVersion / ProductVersion
+          sed -E -i "s/(\"FileVersion\",\s*\")[0-9 ,]+(\")/\1${FULL}\2/" "$RC"
+          sed -E -i "s/(\"ProductVersion\",\s*\")[0-9 ,]+(\")/\1${FULL}\2/" "$RC"
+          # Update FileDescription trailing version if present
+          sed -E -i "s/(\"FileDescription\",\s*\"[^\"]*?)([0-9]+\.[0-9]+\.[0-9]+)(\")/\1${VER}\3/" "$RC" || true
+
       - name: Setup Java (JDK 21)
         uses: actions/setup-java@v4
         with:
@@ -39,8 +64,10 @@ jobs:
           arch: ${{ matrix.arch }}
 
       - name: Configure (CMake NMake)
+        env:
+          WRAP_VER: ${{ steps.ver.outputs.version }}
         run: |
-          cmake -S src/c -B build -G "NMake Makefiles" -DUNICODE=ON
+          cmake -S src/c -B build -G "NMake Makefiles" -DUNICODE=ON -DWRAPPER_VERSION="${WRAP_VER}"
         shell: bash
 
       - name: Build (Release)

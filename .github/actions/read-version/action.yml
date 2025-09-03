@@ -1,0 +1,34 @@
+name: "Read version from default.properties"
+description: "Parses version.root (fallback to Version) and exposes it as an output"
+inputs:
+  properties_path:
+    description: "Path to properties file"
+    required: false
+    default: default.properties
+outputs:
+  version:
+    description: "Parsed version string"
+    value: ${{ steps.parse.outputs.version }}
+runs:
+  using: "composite"
+  steps:
+    - id: parse
+      shell: bash
+      run: |
+        set -euo pipefail
+        FILE='${{ inputs.properties_path }}'
+        if [ ! -f "$FILE" ]; then
+          echo "Properties file not found: $FILE" >&2
+          exit 1
+        fi
+        VER=$(awk -F'=' '/^\s*version\.root\s*=/{print $2}' "$FILE" | head -n1 | sed -E 's/[[:space:]]+//g')
+        if [ -z "${VER}" ]; then
+          VER=$(awk -F'=' '/^\s*Version\s*=/{print $2}' "$FILE" | head -n1 | sed -E 's/[[:space:]]+//g')
+        fi
+        if [ -z "${VER}" ]; then
+          echo "Failed to parse version from $FILE" >&2
+          exit 1
+        fi
+        echo "version=${VER}" | tee -a "$GITHUB_OUTPUT"
+        echo "Detected version: ${VER}"
+

@@ -28,6 +28,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Read version
+        id: ver
+        uses: ./.github/actions/read-version
+        with:
+          properties_path: default.properties
+
       - name: Resolve source run
         id: resolve
         uses: actions/github-script@v7
@@ -141,6 +147,16 @@ jobs:
           tag_name: win-native-${{ steps.meta.outputs.date_tag }}-${{ steps.resolve.outputs.sha_short }}
           target_commitish: ${{ steps.resolve.outputs.sha }}
           name: ${{ steps.meta.outputs.date }}
+          body: |
+            Windows Native Release
+
+            Version: ${{ steps.ver.outputs.version }}
+
+            Artifacts:
+            - wrapper-win-x64.tar.gz (x64)
+            - wrapper-win-arm64.tar.gz (ARM64)
+
+            Source commit: ${{ steps.resolve.outputs.sha }}
           draft: ${{ inputs.draft }}
           prerelease: ${{ inputs.prerelease }}
           files: |
