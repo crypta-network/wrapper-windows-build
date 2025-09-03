@@ -15,8 +15,8 @@ jobs:
     name: build (${{ matrix.arch }})
     runs-on: ${{ matrix.runs_on }}
     env:
-      # Ensure _DEBUG is not defined for all compile steps
-      CL: /U_DEBUG
+      # Ensure _DEBUG is not defined for all compile steps (use '-' to avoid MSYS path mangling)
+      CL: -U_DEBUG
     strategy:
       fail-fast: false
       matrix:
