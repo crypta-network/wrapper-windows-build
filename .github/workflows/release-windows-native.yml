@@ -144,9 +144,9 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: win-native-${{ steps.meta.outputs.date_tag }}-${{ steps.resolve.outputs.sha_short }}
+          tag_name: win-native-v${{ steps.ver.outputs.version }}
           target_commitish: ${{ steps.resolve.outputs.sha }}
-          name: ${{ steps.meta.outputs.date }}
+          name: Windows Native v${{ steps.ver.outputs.version }} (${{ steps.meta.outputs.date }})
           body: |
             Windows Native Release
 
