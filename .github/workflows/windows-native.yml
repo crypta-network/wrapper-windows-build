@@ -14,6 +14,9 @@ jobs:
   build:
     name: build (${{ matrix.arch }})
     runs-on: ${{ matrix.runs_on }}
+    env:
+      # Ensure _DEBUG is not defined for all compile steps
+      CL: /U_DEBUG
     strategy:
       fail-fast: false
       matrix:
@@ -67,7 +70,7 @@ jobs:
         env:
           WRAP_VER: ${{ steps.ver.outputs.version }}
         run: |
-          cmake -S src/c -B build -G "NMake Makefiles" -DUNICODE=ON -DWRAPPER_VERSION="${WRAP_VER}"
+          cmake -S src/c -B build -G "NMake Makefiles" -DUNICODE=ON -DCMAKE_BUILD_TYPE=Release -DWRAPPER_VERSION="${WRAP_VER}"
         shell: bash
 
       - name: Build (Release)

@@ -73,4 +73,3 @@ clean:
 	$(_VC_MANIFEST_CLEAN)
 
 !include makefile.targ.inc
-
